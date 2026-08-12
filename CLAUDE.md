@@ -70,9 +70,12 @@ binary, which is how these were actually installed on the dev machine:
   dependency), or `npm install -g pyright` if you already have Node
 - `jupyter` + `jupyter-console` (notebooks/console) — `brew install
   jupyterlab`, or `pip install jupyter` into a venv
-- `cmake` + `libtool` — one-time, to compile vterm's native module on
-  first package install (`brew install cmake`; libtool ships with Xcode
-  CLT)
+- `cmake` + GNU libtool — one-time, to compile vterm's native module on
+  first package install: `brew install cmake libtool`. libvterm's build
+  script invokes `glibtool` specifically; macOS's own `/usr/bin/libtool`
+  is Apple's linker tool of the same name, not GNU Libtool, and does
+  *not* satisfy this — the build fails with `glibtool: No such file or
+  directory` until the Homebrew one is installed.
 
 ## Testing a change
 
