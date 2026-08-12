@@ -77,6 +77,32 @@ binary, which is how these were actually installed on the dev machine:
   *not* satisfy this — the build fails with `glibtool: No such file or
   directory` until the Homebrew one is installed.
 
+## Shell-side setup vterm needs
+
+Without this, `default-directory` in a vterm buffer never follows the
+shell's real cwd — `C-x C-f` after `cd`-ing to a subdirectory opens
+relative to wherever the buffer started, not where the shell actually
+is. Not a bug in this config; vterm needs an explicit opt-in on the
+shell side. Add to `~/.zshrc` (vterm ships an equivalent for bash/fish
+too, under the package's own `etc/` dir):
+
+```sh
+if [[ "$INSIDE_EMACS" = 'vterm' ]] \
+    && [[ -n ${EMACS_VTERM_PATH} ]] \
+    && [[ -f ${EMACS_VTERM_PATH}/etc/emacs-vterm-zsh.sh ]]; then
+        source ${EMACS_VTERM_PATH}/etc/emacs-vterm-zsh.sh
+fi
+```
+
+`EMACS_VTERM_PATH` is set by vterm.el itself (to wherever the currently
+loaded vterm package lives) whenever it spawns a shell, so this doesn't
+need updating across package upgrades. The sourced script hooks zsh's
+`chpwd`/prompt machinery to emit an OSC escape sequence vterm parses to
+sync `default-directory` — and the host too, so it works over SSH via
+TRAMP. This replaces the old config's PS1-regexp `dirtrack-mode` hack
+entirely; don't reintroduce that, vterm's mechanism is more robust
+(protocol-based, not prompt-regexp parsing) and works remotely.
+
 ## Testing a change
 
 `emacs --batch -l init.el --eval '(kill-emacs)'` catches load-order and
