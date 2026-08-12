@@ -35,6 +35,18 @@ language) — see `CLAUDE.md` for why.
 6. Smoke-test: `emacs --batch -l init.el --eval '(kill-emacs)'` from the
    repo root should exit cleanly.
 
+## Known languages (verified, so step 1/2/5 don't need re-research)
+
+| Language | `-ts-mode` (built-in, Emacs 29+) | Grammar source for `init-treesit.el` | LSP server | Install | Gotcha |
+|---|---|---|---|---|---|
+| C++ | `c++-ts-mode` | `https://github.com/tree-sitter/tree-sitter-cpp` | `clangd` | `brew install llvm` | `llvm` is keg-only — not on PATH by default. Either add `$(brew --prefix llvm)/bin` to PATH or use the absolute path in the `eglot-server-programs` entry. |
+| Rust | `rust-ts-mode` | `https://github.com/tree-sitter/tree-sitter-rust` | `rust-analyzer` | `brew install rust-analyzer` | none |
+| Java | `java-ts-mode` | `https://github.com/tree-sitter/tree-sitter-java` | `jdtls` | `brew install jdtls` | jdtls needs a per-project `--data <workspace-dir>` argument, unlike the other three servers here — a plain `("jdtls")` entry in `eglot-server-programs` won't work. Use eglot's function-valued "contact" form (see the `eglot-server-programs` docstring, `C-h v`) to compute a per-project data dir, e.g. under `~/.cache/jdtls/<project-name>`. |
+
+If a fourth language comes up that isn't in this table, verify with
+`brew search <lsp-server-name>` before writing the install command down
+— don't guess a formula name.
+
 ## What not to do
 
 - Don't add a language-specific completion or minibuffer package — the

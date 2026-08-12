@@ -125,4 +125,15 @@ frame. There's no other test suite here; this is a config, not a library.
 
 Use the `add-language-mode` skill (`.claude/skills/add-language-mode/`) —
 it scaffolds a new `lisp/init-<lang>.el` following the same eglot +
-tree-sitter pattern as Go/Python, and wires it into `init.el`.
+tree-sitter pattern as Go/Python, and wires it into `init.el`. It
+already has a verified reference table (tree-sitter mode, grammar
+source, LSP server, install command) for C++, Rust, and Java — check
+there before researching a language server from scratch.
+
+## Upgrading Emacs itself
+
+Use the `upgrade-emacs-version` skill
+(`.claude/skills/upgrade-emacs-version/`) — upgrades the Cask build and
+runs through the specific things a new Emacs release can break here
+(tree-sitter ABI, eglot/treesit API changes, vterm's native module),
+rather than a full from-scratch verification pass.
