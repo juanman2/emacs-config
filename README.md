@@ -12,8 +12,15 @@ this config (including a Claude Code skill for adding new languages).
 ## Install
 
 ```sh
-git clone git@github.com:juanman2/emacs-config.git ~/.emacs.d
+git clone git@github.com:juanman2/emacs-config.git ~/src/emacs-config
+~/src/emacs-config/install.sh
 ```
+
+The repo lives at `~/src/emacs-config`, not `~/.emacs.d` directly —
+`install.sh` symlinks `~/.emacs.d` to it (backing up, never
+overwriting, anything unexpected already there) so the repo can be
+cloned wherever you keep source checkouts, not forced into
+`~/.emacs.d`. Safe to re-run any time; it's a no-op if already linked.
 
 Then launch Emacs once interactively (not `--batch`) so `use-package`
 can install everything from GNU ELPA/NonGNU ELPA/MELPA.
