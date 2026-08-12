@@ -18,6 +18,41 @@ git clone git@github.com:juanman2/emacs-config.git ~/.emacs.d
 Then launch Emacs once interactively (not `--batch`) so `use-package`
 can install everything from GNU ELPA/NonGNU ELPA/MELPA.
 
+### Get a GUI-capable Emacs on macOS
+
+`brew install emacs` (the core Homebrew formula) is compiled
+`--without-ns` — a console-only build with no native window support at
+all. It'll run, but `mac-command-modifier`/`ns-command-modifier` (see
+`lisp/init-keys.el`) do nothing on it, and running it inside a terminal
+emulator can't work regardless — Cmd-key combos never reach a program
+hosted in a terminal, only Control/Escape sequences pass through a tty.
+
+Use the official Cask build instead: `brew install --cask emacs`
+(installs `/Applications/Emacs.app`, and links `emacs`/`emacsclient`
+into `/opt/homebrew/bin`). If a console-only `emacs` formula is already
+installed, `brew uninstall emacs` first so the Cask's binaries link
+cleanly instead of being skipped.
+
+For working from a terminal day-to-day, run Emacs as a daemon and open
+GUI frames against it with `emacsclient -c`, rather than running a
+terminal-hosted session — that's the only way Mac keybindings apply.
+A shell function like this (in `~/.zshrc`) makes `emacs` do that
+transparently, starting the daemon on first use:
+
+```sh
+emacs() {
+  if ! emacsclient -e t &>/dev/null; then
+    command emacs --daemon &>/dev/null
+    for _ in {1..40}; do
+      emacsclient -e t &>/dev/null && break
+      sleep 0.25
+    done
+  fi
+  emacsclient -c -n "$@"
+}
+alias emacs-term='command emacs -nw'  # escape hatch to a terminal-hosted session
+```
+
 ### External binaries
 
 Install separately, per machine — see "External binaries" in `CLAUDE.md`
