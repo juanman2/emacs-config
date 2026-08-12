@@ -1,0 +1,10 @@
+elpa/
+eln-cache/
+auto-save-list/
+server/
+tree-sitter/
+history
+*.elc
+transient/
+tramp
+.dir-locals-2.el
