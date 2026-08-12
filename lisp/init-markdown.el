@@ -10,7 +10,11 @@
   :custom
   ;; Fenced code blocks get the real major mode's syntax highlighting
   ;; (a ```python block reads like a .py buffer) instead of a flat color.
-  (markdown-fontify-code-blocks-natively t))
+  (markdown-fontify-code-blocks-natively t)
+  ;; The Markdown-mode equivalent of init-org.el's
+  ;; org-hide-emphasis-markers: raw #/*/_ markup hides itself and
+  ;; headers/emphasis render styled directly in the buffer.
+  (markdown-hide-markup t))
 
 (provide 'init-markdown)
 ;;; init-markdown.el ends here
