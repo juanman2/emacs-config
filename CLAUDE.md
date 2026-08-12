@@ -59,13 +59,20 @@ speculatively.
 
 ## External binaries this config assumes are on PATH
 
-These aren't installed by Emacs — install them separately, per-machine:
+These aren't installed by Emacs — install them separately, per-machine.
+Prefer Homebrew over the language-native installers below when there's a
+formula for it — it doesn't require a Go/Node toolchain just to get one
+binary, which is how these were actually installed on the dev machine:
 
-- `gopls` (Go) — `go install golang.org/x/tools/gopls@latest`
-- `pyright` (Python) — `npm install -g pyright`
-- `jupyter` (notebooks/console) — `pip install jupyter`
+- `gopls` (Go) — `brew install gopls`, or `go install
+  golang.org/x/tools/gopls@latest` if you already have a Go toolchain
+- `pyright` (Python) — `brew install pyright` (pulls in Node as a
+  dependency), or `npm install -g pyright` if you already have Node
+- `jupyter` + `jupyter-console` (notebooks/console) — `brew install
+  jupyterlab`, or `pip install jupyter` into a venv
 - `cmake` + `libtool` — one-time, to compile vterm's native module on
-  first package install
+  first package install (`brew install cmake`; libtool ships with Xcode
+  CLT)
 
 ## Testing a change
 
