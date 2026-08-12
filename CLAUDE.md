@@ -77,14 +77,24 @@ binary, which is how these were actually installed on the dev machine:
   *not* satisfy this — the build fails with `glibtool: No such file or
   directory` until the Homebrew one is installed.
 
-## Shell-side setup vterm needs
+## Shell-side setup this config needs: emacs-config.sh
 
-Without this, `default-directory` in a vterm buffer never follows the
-shell's real cwd — `C-x C-f` after `cd`-ing to a subdirectory opens
-relative to wherever the buffer started, not where the shell actually
-is. Not a bug in this config; vterm needs an explicit opt-in on the
-shell side. Add to `~/.zshrc` (vterm ships an equivalent for bash/fish
-too, under the package's own `etc/` dir):
+`emacs-config.sh` (repo root) holds everything that has to live in the
+shell rather than in Elisp — deliberately kept out of `~/.zshrc` itself
+(source it from there instead) so shell config doesn't end up split
+between two repos once a separate dotfiles/shell-config repo exists.
+Currently it covers:
+
+- the `emacs`/`emacs-term` daemon-launcher functions (see "Get a
+  GUI-capable Emacs on macOS" in `README.md`)
+- vterm's directory-tracking integration, below
+
+Without the vterm piece, `default-directory` in a vterm buffer never
+follows the shell's real cwd — `C-x C-f` after `cd`-ing to a
+subdirectory opens relative to wherever the buffer started, not where
+the shell actually is. Not a bug in this config; vterm needs an
+explicit opt-in on the shell side (vterm ships an equivalent for
+bash/fish too, under the package's own `etc/` dir):
 
 ```sh
 if [[ "$INSIDE_EMACS" = 'vterm' ]] \

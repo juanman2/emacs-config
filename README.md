@@ -36,21 +36,15 @@ cleanly instead of being skipped.
 For working from a terminal day-to-day, run Emacs as a daemon and open
 GUI frames against it with `emacsclient -c`, rather than running a
 terminal-hosted session — that's the only way Mac keybindings apply.
-A shell function like this (in `~/.zshrc`) makes `emacs` do that
-transparently, starting the daemon on first use:
+`emacs-config.sh` in this repo does that transparently (an `emacs`
+function that starts the daemon on first use, plus vterm's directory
+tracking) — source it from `~/.zshrc` rather than pasting its contents
+in directly, so this repo stays the one place that needs updating:
 
 ```sh
-emacs() {
-  if ! emacsclient -e t &>/dev/null; then
-    command emacs --daemon &>/dev/null
-    for _ in {1..40}; do
-      emacsclient -e t &>/dev/null && break
-      sleep 0.25
-    done
-  fi
-  emacsclient -c -n "$@"
-}
-alias emacs-term='command emacs -nw'  # escape hatch to a terminal-hosted session
+if [ -e ~/src/emacs-config/emacs-config.sh ]; then
+  source ~/src/emacs-config/emacs-config.sh
+fi
 ```
 
 ### External binaries
