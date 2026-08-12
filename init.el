@@ -26,6 +26,7 @@
 (require 'init-eglot)
 (require 'init-go)
 (require 'init-python)
+(require 'init-markdown)
 (require 'init-shell)
 (require 'init-org)
 (require 'init-jupyter)
